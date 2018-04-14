@@ -33,9 +33,15 @@ def newpost():
             return redirect('/blog')
     return render_template('newpost.html', title="Build A Blog")
 
-@app.route('/blog')
+@app.route('/blog', methods=['GET'])
 def blog():
     blogs = Blog.query.all()
+    id = request.args.get("id")
+    if id:
+        specificblog = Blog.query.filter_by(id=id).first()
+        specifictitle = specificblog.title
+        specificbody = specificblog.body
+        return render_template('blog.html', specificblog_title=specifictitle, specificblog_post=specificbody)
     return render_template('blog.html', title='Build A Blog', title2='Build A Blog', blogs=blogs)
 
 @app.route('/')

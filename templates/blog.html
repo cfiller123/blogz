@@ -3,17 +3,18 @@
 {% block content %}
 
 <h1 style="text-align:center;">{{title}}</h1>
-    {% if blogs|length == 0 %}
-        <p>No blog posts yet</p>
-    {% else %}
+<h1 style="text-align:center;">{{specificblog_title}}</h1> 
+<p>{{specificblog_post}}</p>   
 
             {% for blog in blogs %}
-            <h2>{{blog.title}}</h2>
-            <p>{{blog.body}}</p>
+            
+            <h2>
+                <a href="/blog?id={{blog.id}}">{{blog.title}}</a>
+            </h2>
+            <p>
+                {{blog.body}}
+            </p>
+            
             {% endfor %}
-
-    {% endif %}
-
-
 
 {% endblock %}
