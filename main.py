@@ -25,13 +25,13 @@ def newpost():
         new_blog_post = Blog(blog_title,blog_content)
         db.session.add(new_blog_post)
         db.session.commit()
+        id = str(new_blog_post.id)
         blogs = Blog.query.all()
-        if (not blog_title) and (not blog_content):
+        if (not blog_title) or (not blog_content):
             flash('Please enter a title and content', 'error')
-            return redirect('/newpost')
+            return render_template('newpost.html', original_title=blog_title, original_content=blog_content)
         else:
             specificblog = Blog.query.filter_by(title=blog_title).first()
-            id = str(specificblog.id)
             return redirect('/blog?id='+id)
     return render_template('newpost.html', title="Build A Blog")
 
