@@ -31,17 +31,16 @@ def newpost():
             return redirect('/newpost')
         else:
             return redirect('/blog')
-
     return render_template('newpost.html', title="Build A Blog")
 
 @app.route('/blog')
 def blog():
     blogs = Blog.query.all()
-    render_template('blog.html', title='Build A Blog', blogs=blogs)
+    return render_template('blog.html', title='Build A Blog', title2='Build A Blog', blogs=blogs)
 
 @app.route('/')
 def index():
-    return redirect('blog.html')
+    return redirect('/blog')
 
 if __name__ == '__main__':
     app.run()
