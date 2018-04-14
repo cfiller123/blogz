@@ -22,17 +22,21 @@ def newpost():
     if request.method == 'POST':
         blog_title = request.form['title']
         blog_content = request.form['content']
-        new_blog_post = Blog(blog_title,blog_content)
-        db.session.add(new_blog_post)
-        db.session.commit()
-        id = str(new_blog_post.id)
-        blogs = Blog.query.all()
         if (not blog_title) or (not blog_content):
             flash('Please enter a title and content', 'error')
             return render_template('newpost.html', original_title=blog_title, original_content=blog_content)
         else:
-            specificblog = Blog.query.filter_by(title=blog_title).first()
-            return redirect('/blog?id='+id)
+            new_blog_post = Blog(blog_title,blog_content)
+            db.session.add(new_blog_post)
+            db.session.commit()
+            id = str(new_blog_post.id)
+            blogs = Blog.query.all()
+            if (not blog_title) or (not blog_content):
+                flash('Please enter a title and content', 'error')
+                return render_template('newpost.html', original_title=blog_title, original_content=blog_content)
+            else:
+                specificblog = Blog.query.filter_by(title=blog_title).first()
+                return redirect('/blog?id='+id)
     return render_template('newpost.html', title="Build A Blog")
 
 @app.route('/blog', methods=['GET'])
