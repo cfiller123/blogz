@@ -30,7 +30,9 @@ def newpost():
             flash('Please enter a title and content', 'error')
             return redirect('/newpost')
         else:
-            return redirect('/blog')
+            specificblog = Blog.query.filter_by(title=blog_title).first()
+            id = str(specificblog.id)
+            return redirect('/blog?id='+id)
     return render_template('newpost.html', title="Build A Blog")
 
 @app.route('/blog', methods=['GET'])
