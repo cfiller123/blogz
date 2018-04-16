@@ -12,10 +12,22 @@ class Blog(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(240))
     body = db.Column(db.Text)
+    owner_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
-    def __init__(self, title, body):
+    def __init__(self, title, body, owern):
         self.title = title
         self.body = body
+        self.owner = owner
+
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(120))
+    password = db.Column(db.String(120))
+    blogs = db.relationship('Blog',backref='owner')
+
+    def __init__(self, username, password):
+        self.username = username
+        self.password = password
 
 @app.route('/newpost', methods=['POST','GET'])
 def newpost():
@@ -26,7 +38,7 @@ def newpost():
             flash('Please enter a title and content', 'error')
             return render_template('newpost.html', original_title=blog_title, original_content=blog_content)
         else:
-            new_blog_post = Blog(blog_title,blog_content)
+            new_blog_post = Blog(blog_title,blog_content,session['email'])
             db.session.add(new_blog_post)
             db.session.commit()
             id = str(new_blog_post.id)
