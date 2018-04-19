@@ -31,6 +31,21 @@ class User(db.Model):
 
 @app.route('/signup', methods=['POST'])
 def signup():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        verify = request.form['verify']
+        existing_user = User.query.filter_by(username=username).first()
+        if not existing_user:
+            new_user = User(username, password)
+            db.session.add(new_user)
+            db.session.commit()
+            session['email'] = email
+            return redirect('/')
+        else:
+            return "<h1>Duplicate user</h1>"
+    return render_template('register.html')
+
 
 @app.route('/login', methods=['POST','GET'])
 def login():
@@ -38,13 +53,16 @@ def login():
         username = request.form['username']
         password = request.form['password']
         user = User.query.filter_by(username=username).first()
-    if user and user.password == password:
+        if user and user.password == password:
             session['email'] = email
             flash("Logged in")
             return redirect('/')
-    else:
-            flash('User password incorrect, or user does not exist', 'error')
-
+        elif (not user) and password:
+            flash('Username incorrect or you did not enter a username', 'error')
+        elif (not password) and user:
+            flash('Password incorrect or you did not enter a password', 'error')
+        else:
+            flash('You must enter a password and username', 'error')
     return render_template('login.html')
 
 
