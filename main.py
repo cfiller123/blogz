@@ -29,22 +29,30 @@ class User(db.Model):
         self.username = username
         self.password = password
 
-@app.route('/signup', methods=['POST'])
+@app.route('/signup', methods=['POST', 'GET'])
 def signup():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
         verify = request.form['verify']
         existing_user = User.query.filter_by(username=username).first()
-        if not existing_user:
+        if (not username) or (not password) or (not verify):
+            flash('One or more fields are empty', 'error')
+        elif len(password)<3:
+            flash('Password too short', 'error')
+        elif len(username)<3:
+            flash('Username too short', 'error')
+        elif password != verify:
+            flash('Passwords do not match', 'error')
+        elif not existing_user:
             new_user = User(username, password)
             db.session.add(new_user)
             db.session.commit()
-            session['email'] = email
+            session['user'] = username
             return redirect('/')
         else:
-            return "<h1>Duplicate user</h1>"
-    return render_template('register.html')
+            flash('This user already exists', 'error')
+    return render_template('signup.html')
 
 
 @app.route('/login', methods=['POST','GET'])
@@ -54,13 +62,13 @@ def login():
         password = request.form['password']
         user = User.query.filter_by(username=username).first()
         if user and user.password == password:
-            session['email'] = email
+            session['user'] = usernam
             flash("Logged in")
             return redirect('/')
         elif (not user) and password:
-            flash('Username incorrect or you did not enter a username', 'error')
-        elif (not password) and user:
-            flash('Password incorrect or you did not enter a password', 'error')
+            flash('Username incorrect or does not exist', 'error')
+        elif (not password) and username:
+            flash('Password incorrect', 'error')
         else:
             flash('You must enter a password and username', 'error')
     return render_template('login.html')
@@ -75,7 +83,7 @@ def newpost():
             flash('Please enter a title and content', 'error')
             return render_template('newpost.html', original_title=blog_title, original_content=blog_content)
         else:
-            new_blog_post = Blog(blog_title,blog_content,session['email'])
+            new_blog_post = Blog(blog_title,blog_content,session['user'])
             db.session.add(new_blog_post)
             db.session.commit()
             id = str(new_blog_post.id)
