@@ -107,6 +107,11 @@ def blog():
         return render_template('blog.html', specificblog_title=specifictitle, specificblog_post=specificbody)
     return render_template('blog.html', title='Build A Blog', title2='Build A Blog', blogs=blogs)
 
+@app.route('/logout')
+def logout():
+    del session['user']
+    return redirect('/')
+
 @app.route('/')
 def index():
     return redirect('/blog')
