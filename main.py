@@ -1,4 +1,4 @@
-from flask import Flask, request, redirect, render_template, flash
+from flask import Flask, request, redirect, render_template, flash, session
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
@@ -14,7 +14,7 @@ class Blog(db.Model):
     body = db.Column(db.Text)
     owner_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
-    def __init__(self, title, body, owern):
+    def __init__(self, title, body, owner):
         self.title = title
         self.body = body
         self.owner = owner
@@ -62,7 +62,7 @@ def login():
         password = request.form['password']
         user = User.query.filter_by(username=username).first()
         if user and user.password == password:
-            session['user'] = usernam
+            session['user'] = username
             flash("Logged in")
             return redirect('/')
         elif (not user) and password:
