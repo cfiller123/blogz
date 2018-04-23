@@ -54,6 +54,11 @@ def signup():
             flash('This user already exists', 'error')
     return render_template('signup.html')
 
+@app.before_request
+def require_login():
+    allowed_routes = ['login', 'index', 'signup', 'blog']
+    if request.endpoint not in allowed_routes and 'user' not in session:
+    return redirect('/login')
 
 @app.route('/login', methods=['POST','GET'])
 def login():
