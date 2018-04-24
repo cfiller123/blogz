@@ -106,11 +106,14 @@ def newpost():
 def blog():
     blogs = Blog.query.all()
     id = request.args.get("id")
+    userID = request.args.get("user")
     if id:
         specificblog = Blog.query.filter_by(id=id).first()
         specifictitle = specificblog.title
         specificbody = specificblog.body
         return render_template('blog.html', specificblog_title=specifictitle, specificblog_post=specificbody)
+    if userID:
+        userblogs = Blog.query.filter_by(username=userID).all()
     return render_template('blog.html', title='Build A Blog', title2='Build A Blog', blogs=blogs)
 
 @app.route('/logout')
