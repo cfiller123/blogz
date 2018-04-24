@@ -2,19 +2,17 @@
 
 {% block content %}
 
-<h1 style="text-align:center;">{{title}}</h1>
-<h1 style="text-align:center;">{{specificblog_title}}</h1> 
-<p>{{specificblog_post}}</p>   
+<h1 style="text-align:center;">Blog Users</h1>
 
-            {% for blog in blogs %}
-            
-            <h2>
-                <a href="/blog?id={{blog.id}}">{{blog.title}}</a>
-            </h2>
-            <p>
-                {{blog.body}}
-            </p>
-            
-            {% endfor %}
-
+    {% if not users %}
+        <p>There are no users yet!</p>
+    {% else %}
+    <ol>
+        {% for user in users %}
+            <li>
+                <a href="/blog?id={{user.username}}">{{user.username}}</a>
+            </li>
+        {% endfor %}
+    </ol>
+    {% endif %}
 {% endblock %}

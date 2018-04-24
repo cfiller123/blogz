@@ -58,7 +58,7 @@ def signup():
 def require_login():
     allowed_routes = ['login', 'index', 'signup', 'blog']
     if request.endpoint not in allowed_routes and 'user' not in session:
-    return redirect('/login')
+        return redirect('/login')
 
 @app.route('/login', methods=['POST','GET'])
 def login():
@@ -84,11 +84,12 @@ def newpost():
     if request.method == 'POST':
         blog_title = request.form['title']
         blog_content = request.form['content']
+        session_user = User.query.filter_by(username=session['user']).first()
         if (not blog_title) or (not blog_content):
             flash('Please enter a title and content', 'error')
             return render_template('newpost.html', original_title=blog_title, original_content=blog_content)
         else:
-            new_blog_post = Blog(blog_title,blog_content,session['user'])
+            new_blog_post = Blog(blog_title,blog_content,session_user)
             db.session.add(new_blog_post)
             db.session.commit()
             id = str(new_blog_post.id)
@@ -119,7 +120,7 @@ def logout():
 
 @app.route('/')
 def index():
-    return redirect('/blog')
+    return render_template('index.html')
 
 if __name__ == '__main__':
     app.run()
