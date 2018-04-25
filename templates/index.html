@@ -7,12 +7,12 @@
     {% if not users %}
         <p>There are no users yet!</p>
     {% else %}
-    <ol>
+    <ul>
         {% for user in users %}
             <li>
-                <a href="/blog?id={{user.username}}">{{user.username}}</a>
+                <a href="/blog?id={{user}}">{{user}}</a>
             </li>
         {% endfor %}
-    </ol>
+    </ul>
     {% endif %}
 {% endblock %}

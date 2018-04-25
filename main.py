@@ -123,7 +123,11 @@ def logout():
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    users = ['']
+    usernames = User.query.all()
+    for user in usernames:
+        users.append(user.username)
+    return render_template('index.html', users=users)
 
 if __name__ == '__main__':
     app.run()
