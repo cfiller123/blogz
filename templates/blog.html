@@ -18,5 +18,9 @@
                 <i>written by <a href="/blog?user={{userID}}">{{userID}}</a></i>
             </p>
             {% endfor %}
-
+{% if specificblog_post %}
+    <p>
+        <i>written by <a href="/blog?user={{userID}}">{{userID}}</a></i>
+    </p>
+{% endif %}
 {% endblock %}

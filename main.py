@@ -106,8 +106,8 @@ def newpost():
 def blog():
     blogs = Blog.query.all()
     id = request.args.get("id")
-    authorblogs = Blog.query.join(User).all()
-    #author = authorblogs.username
+    #authorblogs = Blog.query.join(User.username).all()
+    #author = authorblogs
     userID = request.args.get("user")
     if id:
         specificblog = Blog.query.filter_by(id=id).first()
