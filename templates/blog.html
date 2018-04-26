@@ -3,8 +3,13 @@
 {% block content %}
 
 <h1 style="text-align:center;">{{title}}</h1>
-<h1 style="text-align:center;">{{specificblog_title}}</h1> 
-<p>{{specificblog_post}}</p>   
+{% if specificblog_author %}
+    <h1 style="text-align:center;">{{specificblog_title}}</h1> 
+    <p>{{specificblog_post}}</p>
+    <p>
+            <i>written by <a href="/blog?user={{specificblog_author}}">{{specificblog_author}}</a></i>
+    </p>
+{% endif %}   
 
             {% for blog in blogs %}
             
@@ -15,12 +20,8 @@
                 {{blog.body}}
             </p>
             <p>
-                <i>written by <a href="/blog?user={{userID}}">{{userID}}</a></i>
+                <i>written by <a href="/blog?user={{blog.owner.username}}">{{blog.owner.username}}</a></i>
             </p>
             {% endfor %}
-{% if specificblog_post %}
-    <p>
-        <i>written by <a href="/blog?user={{userID}}">{{userID}}</a></i>
-    </p>
-{% endif %}
+
 {% endblock %}
