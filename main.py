@@ -106,7 +106,7 @@ def newpost():
 def blog():
     blogs = Blog.query.all()
     id = request.args.get("id")
-    #authorblogs = Blog.query.join(User).filter_by(owner_id=blogs.owner).all()
+    authorblogs = Blog.query.join(User).all()
     #author = authorblogs.username
     userID = request.args.get("user")
     if id:
