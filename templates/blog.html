@@ -14,7 +14,9 @@
             <p>
                 {{blog.body}}
             </p>
-            
+            <p>
+                <i>written by <a href="/blog?user={{userID}}">{{userID}}</a></i>
+            </p>
             {% endfor %}
 
 {% endblock %}

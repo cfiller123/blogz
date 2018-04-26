@@ -106,19 +106,20 @@ def newpost():
 def blog():
     blogs = Blog.query.all()
     id = request.args.get("id")
+    #authorblogs = Blog.query.join(User).filter_by(owner_id=blogs.owner).all()
+    #author = authorblogs.username
     userID = request.args.get("user")
     if id:
         specificblog = Blog.query.filter_by(id=id).first()
         specifictitle = specificblog.title
         specificbody = specificblog.body
-        return render_template('blog.html', specificblog_title=specifictitle, specificblog_post=specificbody)
+        #need to put username in userID
+        return render_template('blog.html', specificblog_title=specifictitle, specificblog_post=specificbody, userID=userID)
     if userID:
-    #    specificuser = User.query.filter_by(username=userID).all()   
-    #    usersblogs2 = Blog.query.filter_by(owner_id=specificuser.id).all()
         userblogs = Blog.query.join(User).filter_by(username=userID).all()
-        #specificuserblogs = userblogs.query.filter_by(username=userID).all()
-        return render_template('blog.html', title=userID, blogs=userblogs)
-    return render_template('blog.html', title='Build A Blog', title2='Build A Blog', blogs=blogs)
+        return render_template('blog.html', title=userID, blogs=userblogs, userID=userID)
+    #need to put username in userID
+    return render_template('blog.html', title='Build A Blog', title2='Build A Blog', blogs=blogs, userID=userID)
 
 @app.route('/logout')
 def logout():
