@@ -125,7 +125,7 @@ def logout():
 
 @app.route('/')
 def index():
-    users = ['']
+    users = []
     usernames = User.query.all()
     for user in usernames:
         users.append(user.username)
